@@ -34,65 +34,6 @@
           "description": "Primary title of the record.",
           "type": "string"
         }
-      }
-    },
-    "contributors": {
-      "description": "Contributors in order of importance.",
-      "minItems": 1,
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "ids": {
-            "description": "List of IDs related with the person.",
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-              "additionalProperties": false,
-              "type": "object",
-              "properties": {
-                "source": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "name": {
-            "description": "Full name of person or organisation. Personal name format: family, given.",
-            "type": "string"
-          },
-          "affiliations": {
-            "description": "Affiliation(s) for the purpose of this specific record.",
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-              "type": "string"
-            }
-          },
-          "email": {
-            "type": "string",
-            "description": "Contact email for the purpose of this specific record.",
-            "format": "email"
-          },
-          "role": {
-            "description": "",
-            "type": "string",
-            "enum": [
-              "ContactPerson",
-              "Researcher",
-              "Other"
-            ]
-          }
-        },
-        "required": [
-          "name"
-        ]
-
-      }
     },
     "access": {
       "type": "object",
@@ -123,7 +64,6 @@
           "type": "string",
           "format": "date-time"
         },
-
         "access_condition": {
           "description": "Conditions under which access to files are granted",
           "type": "object",
@@ -139,7 +79,6 @@
             }
           }
         },
-
         "access_right": {
           "default": "open",
           "description": "TODO - Access right for record. - should be computed or moved to metadata?",
