@@ -9,6 +9,8 @@
 
 from __future__ import absolute_import, print_function
 
+from werkzeug.utils import cached_property
+
 from . import config
 
 
@@ -24,6 +26,17 @@ class InvenioRecordsMARC21(object):
         """Flask application initialization."""
         self.init_config(app)
         app.extensions["invenio-records-marc21"] = self
+
+    @cached_property
+    def marc21_cls(self):
+        """Base Marc21 API class."""
+        from .api import Marc21RecordBase
+
+        return type(
+            "Marc21",
+            (Marc21RecordBase,),
+            {},
+        )
 
     def init_config(self, app):
         """Initialize configuration.
