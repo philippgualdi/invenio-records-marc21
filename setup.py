@@ -86,6 +86,12 @@ setup(
         "invenio_i18n.translations": [
             "messages = invenio_records_marc21",
         ],
+        "invenio_pidstore.fetchers": [
+            "marcid = invenio_records_marc21.fetchers:marc_pid_fetcher",
+        ],
+        "invenio_pidstore.minters": [
+            "marcid = invenio_records_marc21.minters:marc_pid_minter",
+        ],
         # TODO: Edit these entry points to fit your needs.
         # 'invenio_access.actions': [],
         # 'invenio_admin.actions': [],
