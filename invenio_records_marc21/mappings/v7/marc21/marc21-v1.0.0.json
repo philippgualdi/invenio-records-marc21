@@ -25,34 +25,6 @@
           "type": "date",
           "format": "date"
         },
-        "contributors": {
-          "type": "object",
-          "properties": {
-            "ids": {
-              "type": "object",
-              "properties": {
-                "source": {
-                  "type": "text"
-                },
-                "value": {
-                  "type": "keyword"
-                }
-              }
-            },
-            "affiliations": {
-              "type": "text"
-            },
-            "role": {
-              "type": "text"
-            },
-            "email": {
-              "type": "text"
-            },
-            "name": {
-              "type": "text"
-            }
-          }
-        },
         "_created": {
           "type": "date"
         },
