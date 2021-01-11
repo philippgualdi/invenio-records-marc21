@@ -86,6 +86,9 @@ setup(
         "invenio_i18n.translations": [
             "messages = invenio_records_marc21",
         ],
+        "invenio_jsonschemas.schemas": [
+            "marc21 = invenio_records_marc21.jsonschemas",
+        ],
         "invenio_search.mappings": [
             "marc21 = invenio_records_marc21.mappings",
         ],
