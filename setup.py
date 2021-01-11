@@ -86,6 +86,9 @@ setup(
         "invenio_i18n.translations": [
             "messages = invenio_records_marc21",
         ],
+        "invenio_search.mappings": [
+            "marc21 = invenio_records_marc21.mappings",
+        ],
         "invenio_pidstore.fetchers": [
             "marcid = invenio_records_marc21.fetchers:marc_pid_fetcher",
         ],
