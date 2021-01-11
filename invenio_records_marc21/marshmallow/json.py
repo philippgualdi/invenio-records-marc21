@@ -18,23 +18,6 @@ from invenio_records_rest.schemas.fields import (
 from marshmallow import fields, missing, validate
 
 
-class PersonIdsSchemaV1(StrictKeysMixin):
-    """Ids schema."""
-
-    source = fields.Str()
-    value = fields.Str()
-
-
-class ContributorSchemaV1(StrictKeysMixin):
-    """Contributor schema."""
-
-    ids = fields.Nested(PersonIdsSchemaV1, many=True)
-    name = fields.Str(required=True)
-    role = fields.Str()
-    affiliations = fields.List(fields.Str())
-    email = fields.Str()
-
-
 class MetadataSchemaV1(StrictKeysMixin):
     """Schema for the record metadata."""
 
@@ -47,7 +30,6 @@ class MetadataSchemaV1(StrictKeysMixin):
     title = SanitizedUnicode(required=True, validate=validate.Length(min=3))
     keywords = fields.Nested(fields.Str(), many=True)
     publication_date = DateString()
-    contributors = Nested(ContributorSchemaV1, many=True, required=True)
 
 
 class RecordSchemaV1(StrictKeysMixin):
