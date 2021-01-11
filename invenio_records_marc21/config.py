@@ -14,15 +14,16 @@ from invenio_records_rest.utils import allow_all, check_elasticsearch
 from invenio_search import RecordsSearch
 
 RECORDS_REST_ENDPOINTS = {
-    "recid": dict(
-        pid_type="recid",
-        pid_minter="recid",
-        pid_fetcher="recid",
+    "marcid": dict(
+        pid_type="marcid",
+        pid_minter="marcid",
+        pid_fetcher="marcid",
         default_endpoint_prefix=True,
+        record_class="invenio_records_marc21.api:Marc21RecordBase",
         search_class=RecordsSearch,
-        indexer_class=RecordIndexer,
         search_index="records",
         search_type=None,
+        indexer_class="invenio_records_marc21.indexer:Marc21RecordIndexer",
         record_serializers={
             "application/json": (
                 "invenio_records_marc21.serializers" ":json_v1_response"
@@ -36,8 +37,8 @@ RECORDS_REST_ENDPOINTS = {
         record_loaders={
             "application/json": ("invenio_records_marc21.loaders" ":json_v1"),
         },
-        list_route="/records/",
-        item_route="/records/<pid(recid):pid_value>",
+        list_route="/marc/",
+        item_route="/marc/<pid(marcid):pid_value>",
         default_media_type="application/json",
         max_result_window=10000,
         error_handlers=dict(),
@@ -52,8 +53,8 @@ RECORDS_REST_ENDPOINTS = {
 
 RECORDS_UI_ENDPOINTS = {
     "recid": {
-        "pid_type": "recid",
-        "route": "/records/<pid_value>",
+        "pid_type": "marcid",
+        "route": "/marc/<pid_value>",
         "template": "invenio_records_marc21/record.html",
     },
 }
