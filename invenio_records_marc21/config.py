@@ -9,19 +9,18 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_indexer.api import RecordIndexer
+from invenio_records_rest.query import es_search_factory
 from invenio_records_rest.utils import allow_all, check_elasticsearch
-from invenio_search import RecordsSearch
 
-RECORDS_REST_ENDPOINTS = {
+MARC21_REST_ENDPOINTS = {
     "marcid": dict(
         pid_type="marcid",
         pid_minter="marcid",
         pid_fetcher="marcid",
         default_endpoint_prefix=True,
         record_class="invenio_records_marc21.api:Marc21RecordBase",
-        search_class=RecordsSearch,
-        search_index="records",
+        search_class="invenio_search.RecordsSearch",
+        search_index=None,
         search_type=None,
         indexer_class="invenio_records_marc21.indexer:Marc21RecordIndexer",
         record_serializers={
@@ -51,8 +50,8 @@ RECORDS_REST_ENDPOINTS = {
 }
 """REST API for invenio-records-marc21."""
 
-RECORDS_UI_ENDPOINTS = {
-    "recid": {
+MARC21_UI_ENDPOINTS = {
+    "marcid": {
         "pid_type": "marcid",
         "route": "/marc/<pid_value>",
         "template": "invenio_records_marc21/record.html",
@@ -60,10 +59,10 @@ RECORDS_UI_ENDPOINTS = {
 }
 """Records UI for invenio-records-marc21."""
 
-SEARCH_UI_JSTEMPLATE_RESULTS = "templates/invenio_records_marc21/results.html"
+# SEARCH_UI_JSTEMPLATE_RESULTS = "templates/invenio_records_marc21/results.html"
 """Result list template."""
 
-PIDSTORE_RECID_FIELD = "marcid"
+# PIDSTORE_RECID_FIELD = "marcid"
 
 INVENIO_RECORDS_MARC21_ENDPOINTS_ENABLED = True
 """Enable/disable automatic endpoint registration."""

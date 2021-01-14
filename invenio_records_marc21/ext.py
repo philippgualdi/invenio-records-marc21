@@ -47,14 +47,11 @@ class InvenioRecordsMARC21(object):
             "INVENIO_RECORDS_MARC21_ENDPOINTS_ENABLED", True
         )
         for k in dir(config):
-            if k.startswith("INVENIO_RECORDS_MARC21_"):
+            if k.startswith("MARC21_"):
+                if k == "MARC21_REST_ENDPOINTS":
+                    app.config.setdefault("RECORDS_REST_ENDPOINTS", {})
+                    app.config["RECORDS_REST_ENDPOINTS"].update(getattr(config, k))
+                elif k == "MARC21_UI_ENDPOINTS":
+                    app.config.setdefault("RECORDS_UI_ENDPOINTS", {})
+                    app.config["RECORDS_UI_ENDPOINTS"].update(getattr(config, k))
                 app.config.setdefault(k, getattr(config, k))
-            elif k == "SEARCH_UI_JSTEMPLATE_RESULTS":
-                app.config["SEARCH_UI_JSTEMPLATE_RESULTS"] = getattr(config, k)
-            elif k == "PIDSTORE_RECID_FIELD":
-                app.config["PIDSTORE_RECID_FIELD"] = getattr(config, k)
-            else:
-                for n in ["RECORDS_REST_ENDPOINTS", "RECORDS_UI_ENDPOINTS"]:
-                    if k == n and with_endpoints:
-                        app.config.setdefault(n, {})
-                        app.config[n].update(getattr(config, k))
