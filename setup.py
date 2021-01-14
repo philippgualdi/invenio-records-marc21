@@ -80,11 +80,17 @@ setup(
         "invenio_base.apps": [
             "invenio_records_marc21 = invenio_records_marc21:InvenioRecordsMARC21",
         ],
+        "invenio_base.api_apps": [
+            "invenio_records_marc21 = invenio_records_marc21:InvenioRecordsMARC21",
+        ],
         "invenio_base.blueprints": [
             "invenio_records_marc21 = invenio_records_marc21.views:blueprint",
         ],
         "invenio_i18n.translations": [
             "messages = invenio_records_marc21",
+        ],
+        "invenio_config.module": [
+            "invenio_records_marc21 = invenio_records_marc21.config",
         ],
         "invenio_jsonschemas.schemas": [
             "marc21 = invenio_records_marc21.jsonschemas",
