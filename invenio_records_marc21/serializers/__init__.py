@@ -15,12 +15,12 @@ from invenio_records_rest.serializers.response import (
     search_responsify,
 )
 
-from ..marshmallow import RecordSchemaV1
+from ..marshmallow import Marc21RecordSchemaV1
 
 # Serializers
 # ===========
 #: JSON serializer definition.
-json_v1 = JSONSerializer(RecordSchemaV1, replace_refs=True)
+json_v1 = JSONSerializer(Marc21RecordSchemaV1, replace_refs=True)
 
 # Records-REST serializers
 # ========================

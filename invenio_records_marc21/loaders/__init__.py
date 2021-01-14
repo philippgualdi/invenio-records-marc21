@@ -21,9 +21,9 @@ from invenio_records_rest.loaders.marshmallow import (
     marshmallow_loader,
 )
 
-from ..marshmallow import MetadataSchemaV1
+from ..marshmallow import Marc21MetadataSchemaV1
 
 #: JSON loader using Marshmallow for data validation.
-json_v1 = marshmallow_loader(MetadataSchemaV1)
+json_v1 = marshmallow_loader(Marc21MetadataSchemaV1)
 
 __all__ = ("json_v1",)
