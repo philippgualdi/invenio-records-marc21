@@ -9,9 +9,9 @@
 
 from __future__ import absolute_import, print_function
 
-from .json import MetadataSchemaV1, RecordSchemaV1
+from .json import Marc21MetadataSchemaV1, Marc21RecordSchemaV1
 
 __all__ = (
-    "MetadataSchemaV1",
-    "RecordSchemaV1",
+    "Marc21MetadataSchemaV1",
+    "Marc21RecordSchemaV1",
 )

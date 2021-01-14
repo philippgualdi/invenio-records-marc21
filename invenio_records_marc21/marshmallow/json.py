@@ -18,8 +18,8 @@ from invenio_records_rest.schemas.fields import (
 from marshmallow import fields, missing, validate
 
 
-class MetadataSchemaV1(StrictKeysMixin):
-    """Schema for the record metadata."""
+class Marc21MetadataSchemaV1(StrictKeysMixin):
+    """Schema for the Marc21 metadata."""
 
     def get_marcid(self, obj):
         """Get record id."""
@@ -31,11 +31,10 @@ class MetadataSchemaV1(StrictKeysMixin):
     keywords = fields.Nested(fields.Str(), many=True)
     publication_date = DateString()
 
+class Marc21RecordSchemaV1(StrictKeysMixin):
+    """Marc21 Record schema."""
 
-class RecordSchemaV1(StrictKeysMixin):
-    """Record schema."""
-
-    metadata = fields.Nested(MetadataSchemaV1)
+    metadata = fields.Nested(Marc21MetadataSchemaV1)
     created = fields.Str(dump_only=True)
     revision = fields.Integer(dump_only=True)
     updated = fields.Str(dump_only=True)
