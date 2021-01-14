@@ -1,36 +1,23 @@
 {
   "mappings": {
-    "record-v1.0.0": {
-      "date_detection": false,
-      "numeric_detection": false,
-      "properties": {
-        "$schema": {
-          "type": "text",
-          "index": false
-        },
-        "title": {
-          "type": "text",
-          "copy_to": "suggest_title"
-        },
-        "suggest_title": {
-          "type": "completion"
-        },
-        "marcid": {
-          "type": "double"
-        },
-        "keywords": {
-          "type": "keyword"
-        },
-        "publication_date": {
-          "type": "date",
-          "format": "date"
-        },
-        "_created": {
-          "type": "date"
-        },
-        "_updated": {
-          "type": "date"
-        }
+    "date_detection": false,
+    "numeric_detection": false,
+    "properties": {
+      "$schema": {
+        "type": "text",
+        "index": false
+      },
+      "id": {
+        "type": "keyword"
+      },
+      "record": {
+        "type": "text"
+      },
+      "_created": {
+        "type": "date"
+      },
+      "_updated": {
+        "type": "date"
       }
     }
   }
