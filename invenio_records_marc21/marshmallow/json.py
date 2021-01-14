@@ -21,15 +21,9 @@ from marshmallow import fields, missing, validate
 class Marc21MetadataSchemaV1(StrictKeysMixin):
     """Schema for the Marc21 metadata."""
 
-    def get_marcid(self, obj):
-        """Get record id."""
-        pid = self.context.get("pid")
-        return pid.pid_value if pid else missing
+    id = PersistentIdentifier()
+    record = SanitizedUnicode(required=True)
 
-    marcid = PersistentIdentifier()
-    title = SanitizedUnicode(required=True, validate=validate.Length(min=3))
-    keywords = fields.Nested(fields.Str(), many=True)
-    publication_date = DateString()
 
 class Marc21RecordSchemaV1(StrictKeysMixin):
     """Marc21 Record schema."""
