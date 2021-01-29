@@ -9,9 +9,10 @@
 """High-level API for wokring with Marc21 records, pids and search."""
 
 from .permissions import Marc21RecordPermissionPolicy
-from .services import Marc21RecordService, Marc21RecordServiceConfig
+from .services import Marc21DataType, Marc21RecordService, Marc21RecordServiceConfig
 
 __all__ = (
+    "Marc21DataType",
     "Marc21RecordService",
     "Marc21RecordServiceConfig",
     "Marc21RecordPermissionPolicy",
