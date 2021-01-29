@@ -84,16 +84,8 @@ class Marc21RecordService(RecordDraftService):
                 "metadata": {"record": data},
             }
 
-        if "access" not in data:
-            default_access = {
-                "access": {
-                    "metadata": False,
-                    "owned_by": [identity.id],
-                    "access_right": "open",
-                    "embargo_date": date.today().strftime("%Y-%m-%d"),
-                },
-            }
+        access_data = data.get("access", {})
             if access is not None:
-                default_access["access"].update(access)
-            data.update(default_access)
+            access_data["access"].update(access)
+        data.update({"access": access_data})
         return super().create(identity, data, links_config)
