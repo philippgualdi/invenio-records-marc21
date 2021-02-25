@@ -8,7 +8,7 @@
 
 """Permissions for Invenio Marc21 Records."""
 
-from invenio_records_permissions.generators import AnyUser
+from invenio_records_permissions.generators import AnyUser, SystemProcess
 from invenio_records_permissions.policies.records import RecordPermissionPolicy
 
 
@@ -26,7 +26,7 @@ class Marc21RecordPermissionPolicy(RecordPermissionPolicy):
     """
 
     # TODO: Change all below when permissions settled
-    can_create = [AnyUser()]
-    can_update_files = [AnyUser()]
-    can_publish = [AnyUser()]
-    can_read = [AnyUser()]
+    can_create = [AnyUser(), SystemProcess()]
+    can_update_files = [AnyUser(), SystemProcess()]
+    can_publish = [AnyUser(), SystemProcess()]
+    can_read = [AnyUser(), SystemProcess()]
