@@ -11,10 +11,11 @@ from __future__ import absolute_import, print_function
 
 from invenio_drafts_resources.records import Draft, Record
 from invenio_records.systemfields import RelationsField
-from invenio_records_resources.records.systemfields import IndexField
+from invenio_records_resources.records.systemfields import IndexField, PIDField
 from werkzeug.local import LocalProxy
 
 from . import models
+from .providers import MarcIdProvider
 
 
 class Marc21Draft(Draft):
@@ -26,6 +27,11 @@ class Marc21Draft(Draft):
         "marc21records-drafts-marc21-v1.0.0", search_alias="marc21records-marc21"
     )
 
+    pid = PIDField(
+        "id",
+        provider=MarcIdProvider,
+    )
+
 
 class Marc21Record(Record):
     """Define API for Marc21 creation and manipulation."""
@@ -34,4 +40,9 @@ class Marc21Record(Record):
 
     index = IndexField(
         "marc21records-marc21-marc21-v1.0.0", search_alias="marc21records-marc21"
+    )
+
+    pid = PIDField(
+        "id",
+        provider=MarcIdProvider,
     )
