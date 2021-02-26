@@ -55,8 +55,8 @@ install_requires = [
     "dojson>=1.4.0",
     "idutils>=1.1.7",
     "invenio-records-rest>=1.4.0,<2.0.0",
-    "invenio-drafts-resources>=0.7.2,<0.10.0",
-    "invenio-vocabularies>=0.1.6,<1.0.0",
+    "invenio-drafts-resources>=0.8.2,<0.10.0",
+    "invenio-vocabularies>=0.2.1,<1.0.0",
 ]
 
 packages = find_packages()
@@ -100,6 +100,12 @@ setup(
         ],
         "invenio_search.mappings": [
             "marc21records = invenio_records_marc21.mappings",
+        ],
+        "invenio_pidstore.fetchers": [
+            "marcid = invenio_records_marc21.fetchers:marc_pid_fetcher",
+        ],
+        "invenio_pidstore.minters": [
+            "marcid = invenio_records_marc21.minters:marc_pid_minter",
         ],
         # TODO: Edit these entry points to fit your needs.
         # 'invenio_access.actions': [],
