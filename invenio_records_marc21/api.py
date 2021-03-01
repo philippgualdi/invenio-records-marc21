@@ -10,12 +10,14 @@
 from __future__ import absolute_import, print_function
 
 from invenio_drafts_resources.records import Draft, Record
+from invenio_pidstore.resolver import Resolver
 from invenio_records.systemfields import RelationsField
 from invenio_records_resources.records.systemfields import IndexField, PIDField
 from werkzeug.local import LocalProxy
 
 from . import models
 from .providers import MarcIdProvider
+from .systemfields import Marc21PIDFieldContext
 
 
 class Marc21Draft(Draft):
@@ -28,8 +30,12 @@ class Marc21Draft(Draft):
     )
 
     pid = PIDField(
-        "id",
+        key="id",
+        pid_type="marcid",
+        object_type="rec",
         provider=MarcIdProvider,
+        context_cls=Marc21PIDFieldContext,
+        resolver_cls=Resolver,
     )
 
 
@@ -43,6 +49,10 @@ class Marc21Record(Record):
     )
 
     pid = PIDField(
-        "id",
+        key="id",
+        pid_type="marcid",
+        object_type="rec",
         provider=MarcIdProvider,
+        context_cls=Marc21PIDFieldContext,
+        resolver_cls=Resolver,
     )

@@ -8,10 +8,10 @@
 """Circulation PID providers."""
 
 from invenio_pidstore.models import PIDStatus
-from invenio_pidstore.providers.recordid import RecordIdProvider
+from invenio_pidstore.providers.recordid_v2 import RecordIdProviderV2
 
 
-class MarcIdProvider(RecordIdProvider):
+class MarcIdProvider(RecordIdProviderV2):
     """Marc identifier provider.
 
     This PID provider requires a marc21 record to be passed, and relies
@@ -45,7 +45,7 @@ class MarcIdProvider(RecordIdProvider):
         # Retrieve pid type from type.
         pid_type = "marcid"
         # Retrieve pid type from type.
-        if id in record:
+        if "id" in record:
             pid_value = record["id"]
 
         # You must assign immediately.
