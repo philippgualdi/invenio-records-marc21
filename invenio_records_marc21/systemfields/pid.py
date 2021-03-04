@@ -69,7 +69,6 @@ class Marc21PIDFieldContext(RelatedModelFieldContext):
             ``pid_value`` if the type context has been initialized using
             ``with_type_ctx()``.
         """
-
         # Create resolver
         resolver = self.field._resolver_cls(
             pid_type=self.pid_type,

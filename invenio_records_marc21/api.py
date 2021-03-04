@@ -13,7 +13,6 @@ from invenio_drafts_resources.records import Draft, Record
 from invenio_pidstore.resolver import Resolver
 from invenio_records.systemfields import RelationsField
 from invenio_records_resources.records.systemfields import IndexField, PIDField
-from werkzeug.local import LocalProxy
 
 from . import models
 from .providers import MarcIdProvider
@@ -38,6 +37,15 @@ class Marc21Draft(Draft):
         resolver_cls=Resolver,
     )
 
+    conceptpid = PIDField(
+        key="conceptid",
+        pid_type="marcid",
+        object_type="rec",
+        provider=MarcIdProvider,
+        context_cls=Marc21PIDFieldContext,
+        # resolver_cls=Resolver,
+    )
+
 
 class Marc21Record(Record):
     """Define API for Marc21 creation and manipulation."""
@@ -54,5 +62,14 @@ class Marc21Record(Record):
         object_type="rec",
         provider=MarcIdProvider,
         context_cls=Marc21PIDFieldContext,
-        resolver_cls=Resolver,
+        # resolver_cls=Resolver,
+    )
+
+    conceptpid = PIDField(
+        key="conceptid",
+        pid_type="marcid",
+        object_type="rec",
+        provider=MarcIdProvider,
+        context_cls=Marc21PIDFieldContext,
+        # resolver_cls=Resolver,
     )

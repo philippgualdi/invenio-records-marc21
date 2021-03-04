@@ -26,7 +26,7 @@ class MarcIdProvider(RecordIdProviderV2):
 
         Note: if the object_type and object_uuid values are passed, then the
         PID status will be automatically setted to
-        :attr:`invenio_pidstore.models.PIDStatus.REGISTERED`.
+        :attr:`invenio_pidstore.models.PIDStatus.NEW`.
 
         For more information about parameters,
         see :meth:`invenio_pidstore.providers.base.BaseProvider.create`.
@@ -56,5 +56,5 @@ class MarcIdProvider(RecordIdProviderV2):
             pid_type=pid_type,
             object_type=object_type,
             object_uuid=object_uuid,
-            status=PIDStatus.REGISTERED,
+            status=PIDStatus.NEW,
         )
