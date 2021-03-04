@@ -9,6 +9,24 @@
 
 from invenio_pidstore.models import PIDStatus
 from invenio_pidstore.providers.recordid_v2 import RecordIdProviderV2
+from invenio_pidstore.resolver import Resolver
+
+
+class MarcResolver(Resolver):
+    def __init__(
+        self, pid_type=None, object_type=None, getter=None, registered_only=False
+    ):
+        """Initialize resolver.
+
+        :param pid_type: Persistent identifier type.
+        :param object_type: Object type.
+        :param getter: Callable that will take an object id for the given
+            object type and retrieve the internal object.
+        """
+        self.pid_type = pid_type
+        self.object_type = object_type
+        self.object_getter = getter
+        self.registered_only = registered_only
 
 
 class MarcIdProvider(RecordIdProviderV2):
@@ -18,43 +36,5 @@ class MarcIdProvider(RecordIdProviderV2):
     on the marc21 record having an 'id' key and a type defined.
     """
 
-    @classmethod
-    def create(cls, object_type=None, object_uuid=None, record=None, **kwargs):
-        """Create a new marc21 record identifier.
-
-        Relies on the a marc21 record being
-
-        Note: if the object_type and object_uuid values are passed, then the
-        PID status will be automatically setted to
-        :attr:`invenio_pidstore.models.PIDStatus.NEW`.
-
-        For more information about parameters,
-        see :meth:`invenio_pidstore.providers.base.BaseProvider.create`.
-
-        :param object_type: The object type. (Default: None.)
-        :param object_uuid: The object identifier. (Default: None).
-        :param record: A marc21 record.
-        :param kwargs: Addtional options
-        :returns: A :class:`MarcIdProvider` instance.
-        """
-        # assert record is not None, "Missing or invalid 'record'."
-        # assert "id" in record and isinstance(
-        #    record["id"], str
-        # ), "Missing 'id' key in record."
-
-        # Retrieve pid type from type.
-        pid_type = "marcid"
-        # Retrieve pid type from type.
-        if "id" in record:
-            pid_value = record["id"]
-
-        # You must assign immediately.
-        assert object_uuid
-        assert object_type
-
-        return super().create(
-            pid_type=pid_type,
-            object_type=object_type,
-            object_uuid=object_uuid,
-            status=PIDStatus.NEW,
-        )
+    default_status_with_obj = PIDStatus.NEW
+    pid_type = "marcid"

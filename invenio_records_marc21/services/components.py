@@ -29,13 +29,3 @@ class AccessComponent(ServiceComponent):
         if identity.id:
             validated_data.setdefault("owned_by", [{"user": identity.id}])
         record.update({"access": validated_data})
-
-
-class PIDComponent(ServiceComponent):
-    """PID registration component."""
-
-    def create(self, identity, data=None, record=None, **kwargs):
-        """Create PID when record is created.."""
-        # We create the PID after all the data has been initialized. so that
-        # we can rely on having the 'id' and type set.
-        self.service.record_cls.pid.create(record)

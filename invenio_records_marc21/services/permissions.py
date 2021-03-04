@@ -30,3 +30,6 @@ class Marc21RecordPermissionPolicy(RecordPermissionPolicy):
     can_update_files = [AnyUser()]
     can_publish = [AnyUser()]
     can_read = [AnyUser()]
+    can_update = [AnyUser()]
+    can_read_draft = [AnyUser()]
+    can_delete_draft = [AnyUser()]

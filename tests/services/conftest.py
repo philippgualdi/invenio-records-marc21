@@ -66,5 +66,7 @@ def example_record(app, db):
 def metadata():
     """Input data (as coming from the view layer)."""
     metadata = Metadata()
-    metadata.xml = "<record></record>"
+    metadata.xml = "<record><datafield tag='245' ind1='1' ind2='0'>\
+            <subfield code='a'>laborum sunt ut nulla</subfield>\
+    </datafield></record>"
     return metadata

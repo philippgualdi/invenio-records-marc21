@@ -33,13 +33,11 @@ def marc21():
     return {"metadata": {"xml": "<record></record>"}}
 
 
-def test_create_with_service(app, marc21):
-    identity = Identity(1)
-    identity.provides.add(any_user)
+def test_create_with_service(app, marc21, identity_simple):
 
     service = Marc21RecordService()
 
-    draft = service.create(data=marc21, identity=identity, access=None)
+    draft = service.create(data=marc21, identity=identity_simple, access=None)
 
     root_fields = [
         "id",
@@ -53,7 +51,7 @@ def test_create_with_service(app, marc21):
     _assert_fields_exists(root_fields, draft.data)
     _assert_fields(["metadata"], draft.data, expected)
 
-    record = service.publish(id_=draft.id, identity=identity)
+    record = service.publish(id_=draft.id, identity=identity_simple)
 
     assert record
     _assert_fields_exists(root_fields, record.data)
@@ -127,13 +125,13 @@ def empty_data():
         },
     ],
 )
-def test_create_with_access(app, empty_data, access):
+def test_create_with_access(app, empty_data, identity_simple, access):
 
     service = Marc21RecordService()
-    identity = Identity(1)
-    identity.provides.add(any_user)
-    draft = service.create(data=empty_data, identity=identity, access=access["input"])
-    record = service.publish(id_=draft.id, identity=identity)
+    draft = service.create(
+        data=empty_data, identity=identity_simple, access=access["input"]
+    )
+    record = service.publish(id_=draft.id, identity=identity_simple)
 
     _assert_fields(
         ["access"],

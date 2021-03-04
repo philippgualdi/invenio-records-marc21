@@ -8,8 +8,6 @@
 
 """Marc21 Record Service."""
 
-from datetime import date
-
 from invenio_drafts_resources.services.records import RecordDraftService
 from invenio_records_resources.services.records.components import MetadataComponent
 
@@ -76,7 +74,6 @@ class Marc21RecordService(RecordDraftService):
                     "metadata": False,
                     "owned_by": [{"user": identity.id}],
                     "access_right": "open",
-                    "embargo_date": date.today().strftime("%Y-%m-%d"),
                 },
             }
             if access is not None:
