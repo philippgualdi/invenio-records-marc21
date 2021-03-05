@@ -12,23 +12,6 @@ from invenio_pidstore.providers.recordid_v2 import RecordIdProviderV2
 from invenio_pidstore.resolver import Resolver
 
 
-class MarcResolver(Resolver):
-    def __init__(
-        self, pid_type="marcid", object_type="rec", getter=None, registered_only=False
-    ):
-        """Initialize resolver.
-
-        :param pid_type: Persistent identifier type.
-        :param object_type: Object type.
-        :param getter: Callable that will take an object id for the given
-            object type and retrieve the internal object.
-        """
-        self.pid_type = pid_type
-        self.object_type = object_type
-        self.object_getter = getter
-        self.registered_only = registered_only
-
-
 class MarcRecordProvider(RecordIdProviderV2):
     """Marc records identifier provider.
 
