@@ -9,8 +9,6 @@
 
 from invenio_pidstore.models import PIDStatus
 from invenio_pidstore.providers.recordid_v2 import RecordIdProviderV2
-from invenio_pidstore.resolver import Resolver
-
 
 class MarcRecordProvider(RecordIdProviderV2):
     """Marc records identifier provider.

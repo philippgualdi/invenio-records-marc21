@@ -14,7 +14,7 @@ from invenio_records.systemfields import RelationsField
 from invenio_records_resources.records.systemfields import IndexField, PIDField
 
 from . import models
-from .providers import MarcDraftProvider, MarcRecordProvider, MarcResolver
+from .providers import MarcDraftProvider, MarcRecordProvider
 from .systemfields import Marc21PIDFieldContext
 
 
@@ -32,7 +32,6 @@ class Marc21Draft(Draft):
         provider=MarcDraftProvider,
         context_cls=Marc21PIDFieldContext,
         delete=False,
-        resolver_cls=MarcResolver,
     )
 
     conceptpid = PIDField(
@@ -40,7 +39,6 @@ class Marc21Draft(Draft):
         provider=MarcDraftProvider,
         context_cls=Marc21PIDFieldContext,
         delete=False,
-        resolver_cls=MarcResolver,
     )
 
 
@@ -58,7 +56,6 @@ class Marc21Record(Record):
         provider=MarcRecordProvider,
         delete=False,
         context_cls=Marc21PIDFieldContext,
-        # resolver_cls=MarcResolver,
     )
 
     conceptpid = PIDField(
@@ -66,5 +63,4 @@ class Marc21Record(Record):
         provider=MarcRecordProvider,
         delete=False,
         context_cls=Marc21PIDFieldContext,
-        # resolver_cls=MarcResolver,
     )

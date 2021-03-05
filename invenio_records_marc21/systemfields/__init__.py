@@ -14,9 +14,6 @@
 
 """System fields module."""
 
-
-from invenio_pidstore.resolver import Resolver
-
 from .pid import Marc21PIDFieldContext
 
 __all__ = ("Marc21PIDFieldContext",)
