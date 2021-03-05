@@ -10,12 +10,11 @@
 from __future__ import absolute_import, print_function
 
 from invenio_drafts_resources.records import Draft, Record
-from invenio_pidstore.resolver import Resolver
 from invenio_records.systemfields import RelationsField
 from invenio_records_resources.records.systemfields import IndexField, PIDField
 
 from . import models
-from .providers import MarcIdProvider
+from .providers import MarcDraftProvider, MarcRecordProvider, MarcResolver
 from .systemfields import Marc21PIDFieldContext
 
 
@@ -30,20 +29,22 @@ class Marc21Draft(Draft):
 
     pid = PIDField(
         key="id",
-        pid_type="marcid",
-        object_type="rec",
-        provider=MarcIdProvider,
+        # pid_type="marcid",
+        # object_type="rec",
+        provider=MarcDraftProvider,
         context_cls=Marc21PIDFieldContext,
-        resolver_cls=Resolver,
+        delete=False,
+        resolver_cls=MarcResolver,
     )
 
     conceptpid = PIDField(
         key="conceptid",
-        pid_type="marcid",
-        object_type="rec",
-        provider=MarcIdProvider,
+        # pid_type="marcid",
+        # object_type="rec",
+        provider=MarcDraftProvider,
         context_cls=Marc21PIDFieldContext,
-        # resolver_cls=Resolver,
+        delete=False,
+        resolver_cls=MarcResolver,
     )
 
 
@@ -58,18 +59,20 @@ class Marc21Record(Record):
 
     pid = PIDField(
         key="id",
-        pid_type="marcid",
-        object_type="rec",
-        provider=MarcIdProvider,
+        # pid_type="marcid",
+        # object_type="rec",
+        provider=MarcRecordProvider,
+        delete=False,
         context_cls=Marc21PIDFieldContext,
-        # resolver_cls=Resolver,
+        # resolver_cls=MarcResolver,
     )
 
     conceptpid = PIDField(
         key="conceptid",
-        pid_type="marcid",
-        object_type="rec",
-        provider=MarcIdProvider,
+        # pid_type="marcid",
+        # object_type="rec",
+        provider=MarcRecordProvider,
+        delete=False,
         context_cls=Marc21PIDFieldContext,
-        # resolver_cls=Resolver,
+        # resolver_cls=MarcResolver,
     )

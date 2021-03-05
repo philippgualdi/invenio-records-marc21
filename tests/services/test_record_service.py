@@ -16,7 +16,11 @@ Test to add:
 import time
 
 import pytest
-from invenio_pidstore.errors import PIDDeletedError, PIDUnregistered
+from invenio_pidstore.errors import (
+    PIDDeletedError,
+    PIDDoesNotExistError,
+    PIDUnregistered,
+)
 from invenio_pidstore.models import PIDStatus
 from invenio_search import current_search, current_search_client
 from marshmallow.exceptions import ValidationError
@@ -80,7 +84,7 @@ def test_delete_draft(app, service, identity_simple, metadata):
     assert success
 
     # Check draft deletion
-    with pytest.raises(NoResultFound):
+    with pytest.raises(PIDDoesNotExistError):
         # NOTE: Draft and Record have the same `id`
         delete_draft = service.read_draft(draft.id, identity=identity_simple)
 
@@ -119,29 +123,3 @@ def test_publish_draft(app, service, identity_simple, metadata):
     assert record.id
     assert record._record.pid.status == PIDStatus.REGISTERED
     assert record._record.conceptpid.status == PIDStatus.REGISTERED
-
-
-def test_fail_to_publish_invalid_draft(app, service, identity_simple):
-    """Publishing an incomplete draft should fail.
-
-    Note that the publish action requires a draft to be created first.
-    """
-    # Needs `app` context because of invenio_access/permissions.py#166
-    input_data = Metadata()
-    draft = service.create(identity=identity_simple, metadata=input_data)
-
-    with pytest.raises(ValidationError) as e:
-        record = service.publish(id_=draft.id, identity=identity_simple)
-
-    exception = e.value
-    assert "metadata" not in exception.valid_data
-
-    # Draft still there
-    draft = service.read_draft(id_=draft.id, identity=identity_simple)
-    assert draft
-    assert draft._record.pid.status == PIDStatus.NEW
-    assert draft._record.conceptpid.status == PIDStatus.NEW
-
-    # Test no published record exists
-    with pytest.raises(PIDUnregistered) as e:
-        record = service.read(id_=draft.id, identity=identity_simple)

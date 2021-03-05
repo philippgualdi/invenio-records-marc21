@@ -39,7 +39,7 @@ class Marc21RecordSchema(RecordSchema):
 
     id = fields.Str()
     # pid
-    conceptid = fields.Str()
+    conceptid = fields.Str(dump_only=True)
     # conceptpid
     pids = fields.List(NestedAttribute(PIDSchema))
     metadata = NestedAttribute(MetadataSchema)
@@ -48,6 +48,9 @@ class Marc21RecordSchema(RecordSchema):
     created = fields.Str(dump_only=True)
     updated = fields.Str(dump_only=True)
     revision = fields.Integer(dump_only=True)
+    status = fields.Str(dump_only=True)
+
+    published = fields.Boolean(attribute="is_published", dump_only=True)
 
     @post_dump
     def default_nested(self, data, many, **kwargs):

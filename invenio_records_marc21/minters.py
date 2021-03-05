@@ -7,13 +7,13 @@
 
 """Circulation minters."""
 
-from .providers import MarcIdProvider
+from .providers import MarcRecordProvider
 
 
 def marc_pid_minter(record_uuid, data):
     """Mint marc21 identifiers."""
     assert "id" not in data
-    provider = MarcIdProvider.create(
+    provider = MarcRecordProvider.create(
         object_type="rec",
         object_uuid=record_uuid,
     )

@@ -14,7 +14,7 @@ from invenio_pidstore.resolver import Resolver
 
 class MarcResolver(Resolver):
     def __init__(
-        self, pid_type=None, object_type=None, getter=None, registered_only=False
+        self, pid_type="marcid", object_type="rec", getter=None, registered_only=False
     ):
         """Initialize resolver.
 
@@ -29,12 +29,15 @@ class MarcResolver(Resolver):
         self.registered_only = registered_only
 
 
-class MarcIdProvider(RecordIdProviderV2):
+class MarcRecordProvider(RecordIdProviderV2):
     """Marc identifier provider.
 
     This PID provider requires a marc21 record to be passed, and relies
     on the marc21 record having an 'id' key and a type defined.
     """
 
-    default_status_with_obj = PIDStatus.NEW
     pid_type = "marcid"
+
+
+class MarcDraftProvider(MarcRecordProvider):
+    default_status_with_obj = PIDStatus.NEW
