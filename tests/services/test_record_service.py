@@ -16,6 +16,8 @@ Test to add:
 import time
 
 import pytest
+from dojson.contrib.marc21.utils import create_record
+from dojson.contrib.to_marc21 import to_marc21
 from invenio_pidstore.errors import (
     PIDDeletedError,
     PIDDoesNotExistError,
@@ -123,3 +125,92 @@ def test_publish_draft(app, service, identity_simple, metadata):
     assert record.id
     assert record._record.pid.status == PIDStatus.REGISTERED
     assert record._record.conceptpid.status == PIDStatus.REGISTERED
+
+
+def _test_metadata(metadata, metadata2):
+    assert metadata.keys() == metadata2.keys()
+    for key in metadata.keys():
+        assert metadata[key] == metadata2[key]
+
+
+def test_update_draft(app, service, identity_simple, metadata, metadata2):
+    # Needs `app` context because of invenio_access/permissions.py#166
+    draft = service.create(identity=identity_simple, metadata=metadata)
+    assert draft.id
+
+    # Update draft content
+    update_draft = service.update_draft(
+        draft.id, identity=identity_simple, metadata=metadata2
+    )
+
+    assert draft.id == update_draft.id
+    _test_metadata(
+        to_marc21.do(update_draft["metadata"]["json"]), create_record(metadata.xml)
+    )
+    # Check the updates where savedif "json" in data:
+
+    read_draft = service.read_draft(id_=draft.id, identity=identity_simple)
+
+    assert draft.id == update_draft.id
+    _test_metadata(
+        to_marc21.do(update_draft["metadata"]["json"]),
+        to_marc21.do(read_draft["metadata"]["json"]),
+    )
+
+
+def test_mutiple_edit(app, service, identity_simple, metadata):
+    """Test the revision_id when editing record multiple times..
+
+    This tests the `edit` service method.
+    """
+    # Needs `app` context because of invenio_access/permissions.py#166
+    record = _create_and_publish(service, metadata, identity_simple)
+    marcid = record.id
+
+    # Create new draft of said record
+    draft = service.edit(marcid, identity_simple)
+    assert draft.id == marcid
+    assert draft._record.fork_version_id == record._record.revision_id
+    assert draft._record.revision_id == 4
+
+    draft = service.edit(marcid, identity_simple)
+    assert draft.id == marcid
+    assert draft._record.fork_version_id == record._record.revision_id
+    assert draft._record.revision_id == 4
+
+    # Publish it to check the increment in version_id
+    record = service.publish(marcid, identity_simple)
+
+    draft = service.edit(marcid, identity_simple)
+    assert draft.id == marcid
+    assert draft._record.fork_version_id == record._record.revision_id
+    assert draft._record.revision_id == 7  # soft-delete, undelete, update
+
+
+def test_create_publish_new_version(app, service, identity_simple, metadata):
+    """Test creating a new revision of a record.
+
+    This tests the `new_version` service method.
+    """
+    # Needs `app` context because of invenio_access/permissions.py#166
+    record = _create_and_publish(service, metadata, identity_simple)
+    marcid = record.id
+
+    # Create new version
+    draft = service.new_version(marcid, identity_simple)
+
+    assert draft._record.revision_id == 1
+    assert draft["conceptid"] == record["conceptid"]
+    assert draft["id"] != record["id"]
+    assert draft._record.pid.status == PIDStatus.NEW
+    assert draft._record.conceptpid.status == PIDStatus.REGISTERED
+
+    # Publish it
+    record_2 = service.publish(draft.id, identity_simple)
+
+    assert record_2.id
+    assert record_2._record.pid.status == PIDStatus.REGISTERED
+    assert record_2._record.conceptpid.status == PIDStatus.REGISTERED
+    assert record_2._record.revision_id == 1
+    assert record_2["conceptid"] == record["conceptid"]
+    assert record_2["id"] != record["id"]

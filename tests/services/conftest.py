@@ -70,3 +70,14 @@ def metadata():
             <subfield code='a'>laborum sunt ut nulla</subfield>\
     </datafield></record>"
     return metadata
+
+
+@pytest.fixture()
+def metadata2():
+    """Input data (as coming from the view layer)."""
+    metadata = Metadata()
+    metadata.xml = "<record>\
+    <datafield tag='245' ind1='1' ind2='0'>\
+        <subfield code='a'>nulla sunt laborum</subfield>\
+    </datafield></record>"
+    return metadata

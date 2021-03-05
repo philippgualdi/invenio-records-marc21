@@ -5,7 +5,7 @@
 # invenio-records-lom is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Circulation PID providers."""
+"""Marc PID providers."""
 
 from invenio_pidstore.models import PIDStatus
 from invenio_pidstore.providers.recordid_v2 import RecordIdProviderV2
@@ -30,7 +30,7 @@ class MarcResolver(Resolver):
 
 
 class MarcRecordProvider(RecordIdProviderV2):
-    """Marc identifier provider.
+    """Marc records identifier provider.
 
     This PID provider requires a marc21 record to be passed, and relies
     on the marc21 record having an 'id' key and a type defined.
@@ -40,4 +40,10 @@ class MarcRecordProvider(RecordIdProviderV2):
 
 
 class MarcDraftProvider(MarcRecordProvider):
+    """Marc draft records identifier provider.
+
+    This PID provider requires a marc21 draft record to be passed, and relies
+    on the marc21 record having an 'id' key and a type defined.
+    """
+
     default_status_with_obj = PIDStatus.NEW

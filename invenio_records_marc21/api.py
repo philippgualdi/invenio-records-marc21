@@ -29,8 +29,6 @@ class Marc21Draft(Draft):
 
     pid = PIDField(
         key="id",
-        # pid_type="marcid",
-        # object_type="rec",
         provider=MarcDraftProvider,
         context_cls=Marc21PIDFieldContext,
         delete=False,
@@ -39,8 +37,6 @@ class Marc21Draft(Draft):
 
     conceptpid = PIDField(
         key="conceptid",
-        # pid_type="marcid",
-        # object_type="rec",
         provider=MarcDraftProvider,
         context_cls=Marc21PIDFieldContext,
         delete=False,
@@ -59,8 +55,6 @@ class Marc21Record(Record):
 
     pid = PIDField(
         key="id",
-        # pid_type="marcid",
-        # object_type="rec",
         provider=MarcRecordProvider,
         delete=False,
         context_cls=Marc21PIDFieldContext,
@@ -69,8 +63,6 @@ class Marc21Record(Record):
 
     conceptpid = PIDField(
         key="conceptid",
-        # pid_type="marcid",
-        # object_type="rec",
         provider=MarcRecordProvider,
         delete=False,
         context_cls=Marc21PIDFieldContext,

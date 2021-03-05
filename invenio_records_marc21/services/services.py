@@ -55,16 +55,13 @@ class Marc21RecordService(RecordDraftService):
     config_name = "MARC21_RECORDS_SERVICE_CONFIG"
     default_config = Marc21RecordServiceConfig
 
-    def create(
-        self, identity, data=None, metadata=Metadata(), links_config=None, access=None
-    ):
-        """Create a draft record.
+    def _create_data(self, identity, data, metadata, access=None):
+        """Create a data json.
 
         :param identity: Identity of user creating the record.
-        :param dict data: Input data according to the data schema.
         :param Metadata metadata: Input data according to the metadata schema.
-        :param links_config: Links configuration.
         :param dict access: provide access additional information
+        :return data: marc21 record data
         """
         if data is None:
             data = {"metadata": {"xml": metadata.xml, "json": metadata.json}}
@@ -79,4 +76,39 @@ class Marc21RecordService(RecordDraftService):
             if access is not None:
                 default_access["access"].update(access)
             data.update(default_access)
+        return data
+
+    def create(
+        self, identity, data=None, metadata=Metadata(), links_config=None, access=None
+    ):
+        """Create a draft record.
+
+        :param identity: Identity of user creating the record.
+        :param dict data: Input data according to the data schema.
+        :param Metadata metadata: Input data according to the metadata schema.
+        :param links_config: Links configuration.
+        :param dict access: provide access additional information
+        """
+        data = self._create_data(identity, data, metadata, access)
         return super().create(identity, data, links_config)
+
+    def update_draft(
+        self,
+        id_,
+        identity,
+        data=None,
+        metadata=Metadata(),
+        links_config=None,
+        revision_id=None,
+        access=None,
+    ):
+        """Update a draft record.
+
+        :param identity: Identity of user creating the record.
+        :param dict data: Input data according to the data schema.
+        :param Metadata metadata: Input data according to the metadata schema.
+        :param links_config: Links configuration.
+        :param dict access: provide access additional information
+        """
+        data = self._create_data(identity, data, metadata, access)
+        return super().update_draft(id_, identity, data, links_config, revision_id)
