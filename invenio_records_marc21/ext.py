@@ -33,29 +33,27 @@ class InvenioRecordsMARC21(object):
 
         Override configuration variables with the values in this package.
         """
-        with_endpoints = app.config.get(
-            "INVENIO_RECORDS_MARC21_ENDPOINTS_ENABLED", True
-        )
+        with_endpoints = app.config.get("MARC21_ENDPOINTS_ENABLED", True)
         for k in dir(config):
-            if k.startswith("INVENIO_RECORDS_MARC21_"):
+            if k.startswith("MARC21_"):
                 app.config.setdefault(k, getattr(config, k))
             elif k == "SEARCH_UI_JSTEMPLATE_RESULTS":
                 app.config["SEARCH_UI_JSTEMPLATE_RESULTS"] = getattr(config, k)
-            elif k == "PIDSTORE_RECID_FIELD":
-                app.config["PIDSTORE_RECID_FIELD"] = getattr(config, k)
             else:
-                for n in ["RECORDS_REST_ENDPOINTS", "RECORDS_UI_ENDPOINTS"]:
+                for n in ["MARC21_REST_ENDPOINTS", "MARC21_UI_ENDPOINTS"]:
                     if k == n and with_endpoints:
                         app.config.setdefault(n, {})
                         app.config[n].update(getattr(config, k))
 
     def init_resource(self, app):
         """Initialize resources."""
-        # Records
+
+        # Service
         self.records_service = Marc21RecordService(
             config=app.config.get(Marc21RecordService.config_name),
         )
 
+        # Records
         self.records_resource = Marc21RecordResource(
             service=self.records_service,
             config=app.config.get(Marc21RecordResource.config_name),
