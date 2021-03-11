@@ -10,6 +10,11 @@
 from __future__ import absolute_import, print_function
 
 from .ext import InvenioRecordsMARC21
+from .proxies import current_records_marc21
 from .version import __version__
 
-__all__ = ("__version__", "InvenioRecordsMARC21")
+__all__ = (
+    "__version__",
+    "InvenioRecordsMARC21",
+    "current_records_marc21",
+)
