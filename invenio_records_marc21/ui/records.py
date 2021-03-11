@@ -8,8 +8,7 @@
 
 """Routes for record-related pages provided by Invenio-App-RDM."""
 
-from flask import abort, current_app, render_template, request, url_for
-from flask_login import current_user
+from flask import render_template
 
 from ..resources.serializers.ui import UIJSONSerializer
 from .decorators import pass_record, user_permissions
@@ -34,7 +33,6 @@ def record_detail(record=None, files=None, pid_value=None, permissions=None):
 
 def marc21_index(permissions=None):
     """Record detail page (aka landing page)."""
-
     return render_template(
         "invenio_records_marc21/index.html",
         permissions=permissions,
