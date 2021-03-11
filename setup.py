@@ -96,9 +96,7 @@ setup(
             "invenio_records_marc21_draft = invenio_records_marc21.views:create_drafts_blueprint",
         ],
         "invenio_base.blueprints": [
-            "invenio_records_marc21 = invenio_records_marc21.views:blueprint",
-            "invenio_records_marc21_record = invenio_records_marc21.views:create_records_blueprint",
-            "invenio_records_marc21_draft = invenio_records_marc21.views:create_drafts_blueprint",
+            "invenio_records_marc21_ui = invenio_records_marc21.ui:create_blueprint",
         ],
         "invenio_i18n.translations": [
             "messages = invenio_records_marc21",
