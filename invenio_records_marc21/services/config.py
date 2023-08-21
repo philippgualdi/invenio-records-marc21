@@ -11,7 +11,6 @@
 """Marc21 Record Service config."""
 
 from invenio_drafts_resources.services.records.components import DraftFilesComponent
-from invenio_records_resources.services.base.config import FromConfig
 from invenio_drafts_resources.services.records.config import (
     RecordServiceConfig,
     SearchDraftsOptions,
