@@ -45,7 +45,7 @@ class Marc21RecordService(RDMRecordService):
         if data is None:
             data = metadata.json
         if "files" not in data:
-            data["files"] = {"enabled": files}
+            data["files"] = dict(enabled=files)
         if "access" not in data:
             default_access = {
                 "access": {

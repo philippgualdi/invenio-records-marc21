@@ -42,6 +42,12 @@ MARC21_FACETS = {
             "field": "files.types",
         },
     },
+    "mostviewed": dict(
+        title=_("Most viewed"), fields=["-stats.all_versions.unique_views"]
+    ),
+    "mostdownloaded": dict(
+        title=_("Most downloaded"), fields=["-stats.all_versions.unique_downloads"]
+    ),
 }
 
 MARC21_SORT_OPTIONS = {
