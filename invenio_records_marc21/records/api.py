@@ -16,12 +16,14 @@ from invenio_drafts_resources.records import Draft, Record
 from invenio_drafts_resources.records.api import ParentRecord as BaseParentRecord
 from invenio_drafts_resources.records.systemfields import ParentField
 from invenio_pidstore.models import PIDStatus
+from invenio_rdm_records.records.dumpers import StatisticsDumperExt
 from invenio_rdm_records.records.systemfields import (
     HasDraftCheckField,
     ParentRecordAccessField,
     RecordAccessField,
-    RecordDeletionStatusField,
+    RecordStatisticsField,
 )
+from invenio_records.dumpers import SearchDumper
 from invenio_records.systemfields import ConstantField, DictField, ModelField
 from invenio_records_resources.records.api import FileRecord as BaseFileRecord
 from invenio_records_resources.records.systemfields import (
@@ -69,7 +71,15 @@ class DraftFile(BaseFileRecord):
     record_cls = None  # defined below
 
 
-class Marc21Draft(Draft):
+class CommonFieldsMixin:
+    dumper = SearchDumper(
+        extensions=[
+            StatisticsDumperExt("stats"),
+        ]
+    )
+
+
+class Marc21Draft(Draft, CommonFieldsMixin):
     """Marc21 draft API."""
 
     model_cls = models.DraftMetadata
@@ -116,7 +126,7 @@ class RecordFile(BaseFileRecord):
     record_cls = None  # defined below
 
 
-class Marc21Record(Record):
+class Marc21Record(Record, CommonFieldsMixin):
     """Define API for Marc21 create and manipulate."""
 
     model_cls = models.RecordMetadata
@@ -157,6 +167,8 @@ class Marc21Record(Record):
     pids = DictField("pids")
 
     deletion_status = RecordDeletionStatusField()
+
+    stats = RecordStatisticsField()
 
 
 RecordFile.record_cls = Marc21Record

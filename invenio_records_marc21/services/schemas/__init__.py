@@ -16,6 +16,7 @@ from invenio_i18n import lazy_gettext as _
 from invenio_rdm_records.services.schemas.access import AccessSchema
 from invenio_rdm_records.services.schemas.files import FilesSchema
 from invenio_rdm_records.services.schemas.parent.access import ParentAccessSchema
+from invenio_rdm_records.services.schemas.stats import StatsSchema
 from invenio_rdm_records.services.schemas.versions import VersionsSchema
 from invenio_records_resources.services.records.schema import BaseRecordSchema
 from marshmallow import ValidationError
@@ -71,6 +72,8 @@ class Marc21RecordSchema(BaseRecordSchema, FieldPermissionsMixin):
 
     is_published = Boolean(dump_only=True)
     status = Str(dump_only=True)
+
+    stats = NestedAttribute(StatsSchema, dump_only=True)
 
     # Add version to record schema
     # versions = NestedAttribute(VersionsSchema, dump_only=True)
