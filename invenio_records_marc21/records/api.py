@@ -21,6 +21,7 @@ from invenio_rdm_records.records.systemfields import (
     HasDraftCheckField,
     ParentRecordAccessField,
     RecordAccessField,
+    RecordDeletionStatusField,
     RecordStatisticsField,
 )
 from invenio_records.dumpers import SearchDumper

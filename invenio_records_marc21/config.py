@@ -51,14 +51,14 @@ MARC21_FACETS = {
 }
 
 MARC21_SORT_OPTIONS = {
-    "bestmatch": dict(
-        title=_("Best match"),
-        fields=["_score"],  # search defaults to desc on `_score` field
-    ),
-    "newest": dict(
-        title=_("Newest"),
-        fields=["-created"],
-    ),
+    "bestmatch": {
+        "title": _("Best match"),
+        "fields": ["_score"],  # ES defaults to desc on `_score` field
+    },
+    "newest": {
+        "title": _("Newest"),
+        "fields": ["-created"],
+    },
     "oldest": dict(
         title=_("Oldest"),
         fields=["created"],
@@ -95,6 +95,8 @@ MARC21_SEARCH = {
         "newest",
         "oldest",
         "version",
+        "mostviewed",
+        "mostdownloaded",
     ],
 }
 """Record search configuration."""
