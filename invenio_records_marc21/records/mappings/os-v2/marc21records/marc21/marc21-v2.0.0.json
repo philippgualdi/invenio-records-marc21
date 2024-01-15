@@ -218,6 +218,16 @@
               }
             }
           },
+          "communities": {
+            "properties": {
+              "ids": {
+                "type": "keyword"
+              },
+              "default": {
+                "type": "keyword"
+              }
+            }
+          },
           "is_verified": {
             "type": "boolean"
           },

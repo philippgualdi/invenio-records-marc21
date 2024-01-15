@@ -16,6 +16,9 @@
     "pid": {
       "$ref": "local://marc21/definitions-v1.0.0.json#/internal-pid"
     },
+    "communities": {
+      "$ref": "local://communities/definitions-v2.0.0.json#/communities"
+    },
     "access": {
       "type": "object",
       "description": "Access control and ownership for all versions of a record.",
@@ -30,20 +33,12 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": [
-              "subject",
-              "id",
-              "level"
-            ],
+            "required": ["subject", "id", "level"],
             "additionalProperties": false,
             "properties": {
               "subject": {
                 "type": "string",
-                "enum": [
-                  "user",
-                  "role",
-                  "sysrole"
-                ]
+                "enum": ["user", "role", "sysrole"]
               },
               "id": {
                 "type": "string"
@@ -59,9 +54,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": [
-              "id"
-            ],
+            "required": ["id"],
             "additionalProperties": false,
             "properties": {
               "id": {

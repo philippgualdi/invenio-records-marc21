@@ -27,8 +27,11 @@ theme = WebpackThemeBundle(
             },
             dependencies={
                 "@babel/runtime": "^7.9.0",
-                "react-records-marc21": "^0.2.0",
-                "react-invenio-deposit": "^1.0.2",
+                "marcjs": "^2.0.1",
+                "tinymce": "^6.8.2",
+                "@tinymce/tinymce-react": "^4.3.2",
+                "react-invenio-forms": "^2.1.0",
+                "react-invenio-deposit": "^2.1.2",
                 "i18next": "^20.3.0",
                 "i18next-browser-languagedetector": "^6.1.0",
                 "react-i18next": "^11.11.0",

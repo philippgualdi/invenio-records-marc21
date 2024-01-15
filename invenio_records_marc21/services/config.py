@@ -23,7 +23,11 @@ from invenio_i18n import gettext as _
 from invenio_indexer.api import RecordIndexer
 from invenio_rdm_records.services import facets as rdm_facets
 from invenio_rdm_records.services.components import AccessComponent
-from invenio_rdm_records.services.config import has_doi, is_record_and_has_doi
+from invenio_rdm_records.services.config import (
+    has_doi,
+    is_draft_and_has_review,
+    is_record_and_has_doi,
+)
 from invenio_records_resources.services import (
     ConditionalLink,
     FileServiceConfig,
@@ -86,6 +90,7 @@ class Marc21RecordServiceConfig(RecordServiceConfig, ConfiguratorMixin):
     # Schemas
     schema = Marc21RecordSchema
     schema_parent = Marc21ParentSchema
+    schema_secret_link = None
 
     schema_secret_link = None
     review = None
@@ -182,6 +187,15 @@ class Marc21RecordServiceConfig(RecordServiceConfig, ConfiguratorMixin):
             "{+api}/publications/{id}/draft/actions/publish", when=is_draft
         ),
         "versions": RecordLink("{+api}/publications/{id}/versions"),
+        "communities": RecordLink("{+api}/records/{id}/communities"),
+        "communities-suggestions": RecordLink(
+            "{+api}/publications/{id}/communities-suggestions"
+        ),
+        "review": RecordLink("{+api}/publications/{id}/draft/review", when=is_draft),
+        "submit-review": RecordLink(
+            "{+api}/publications/{id}/draft/actions/submit-review",
+            when=is_draft_and_has_review,
+        ),
     }
 
     # PIDs providers - set from config in customizations.

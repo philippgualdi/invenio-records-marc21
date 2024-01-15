@@ -16,8 +16,10 @@ from invenio_i18n import lazy_gettext as _
 from invenio_rdm_records.services.schemas.access import AccessSchema
 from invenio_rdm_records.services.schemas.files import FilesSchema
 from invenio_rdm_records.services.schemas.parent.access import ParentAccessSchema
+from invenio_rdm_records.services.schemas.parent.communities import CommunitiesSchema
 from invenio_rdm_records.services.schemas.versions import VersionsSchema
 from invenio_records_resources.services.records.schema import BaseRecordSchema
+from invenio_requests.services.schemas import GenericRequestSchema
 from marshmallow import ValidationError
 from marshmallow.decorators import post_dump
 from marshmallow.fields import Boolean, Dict, Integer, Nested, Str
@@ -38,10 +40,14 @@ class Marc21ParentSchema(ParentSchema):
     """Record schema."""
 
     field_dump_permissions = {
+        # omit 'review' from dumps except for users with curate permission
+        "review": "review",
         "access": "manage",
     }
 
     access = Nested(ParentAccessSchema)
+    review = Nested(GenericRequestSchema, allow_none=False)
+    communities = Nested(CommunitiesSchema, dump_only=True)
 
 
 class Marc21RecordSchema(BaseRecordSchema, FieldPermissionsMixin):

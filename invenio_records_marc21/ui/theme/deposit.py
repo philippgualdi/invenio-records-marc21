@@ -9,6 +9,7 @@
 
 
 from flask import current_app, g
+from invenio_communities.proxies import current_communities
 from invenio_i18n.ext import current_i18n
 from invenio_rdm_records.services.schemas.utils import dump_empty
 
@@ -25,6 +26,13 @@ def empty_record():
     record["files"] = {"enabled": True}
     record["status"] = "draft"
     return record
+
+
+def get_user_communities_memberships():
+    """Return current identity communities memberships."""
+    memberships = current_communities.service.members.read_memberships(g.identity)
+    return {id: role for (id, role) in memberships["memberships"]}
+
 
 
 def get_user_roles(identity):
@@ -58,6 +66,7 @@ def deposit_config(**kwargs):
         quota=app_config.get("APP_RDM_DEPOSIT_FORM_QUOTA"),
         createUrl="/api/publications",
         apiHeaders=app_config.get("MARC21_API_HEADERS"),
+        user_communities_memberships=get_user_communities_memberships(),
         # UploadFilesToolbar  disable file upload
         canHaveMetadataOnlyRecords=True,
         **kwargs

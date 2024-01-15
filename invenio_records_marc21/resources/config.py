@@ -12,9 +12,13 @@
 
 import marshmallow as ma
 from flask_resources import JSONDeserializer, RequestBodyParser, ResponseHandler
+from invenio_communities.communities.resources import CommunityResourceConfig
+from invenio_communities.communities.resources.config import community_error_handlers
 from invenio_drafts_resources.resources import RecordResourceConfig
+from invenio_rdm_records.resources import RDMRecordResourceConfig
 from invenio_records_resources.resources.files import FileResourceConfig
 from invenio_records_resources.resources.records.args import SearchRequestArgsSchema
+from invenio_records_resources.services.base.config import ConfiguratorMixin
 
 from .serializers import Marc21JSONSerializer, Marc21XMLSerializer
 from .serializers.ui import Marc21UIJSONSerializer, Marc21UIXMLSerializer
@@ -39,11 +43,20 @@ record_ui_routes = {
     "item-draft": "/<pid_value>/draft",
     "item-publish": "/<pid_value>/draft/actions/publish",
     "item-files-import": "/<pid_value>/draft/actions/files-import",
+    # User dashboard
     "user-prefix": "/user",
+    # Review,
+    "item-review": "/<pid_value>/draft/review",
+    "item-actions-review": "/<pid_value>/draft/actions/submit-review",
+}
+
+community_routes = {
+    "list": "/<pid_value>/communities",
+    "suggestions": "/<pid_value>/communities-suggestions",
 }
 
 
-class Marc21RecordResourceConfig(RecordResourceConfig):
+class Marc21RecordResourceConfig(RDMRecordResourceConfig):
     """Marc21 Record resource configuration."""
 
     blueprint_name = "marc21_records"
@@ -57,14 +70,19 @@ class Marc21RecordResourceConfig(RecordResourceConfig):
         "pid_value": ma.fields.Str(),
         "pid_type": ma.fields.Str(),
     }
+
     links_config = {}
 
     routes = record_ui_routes
 
     # Request parsing
     request_args = SearchRequestArgsSchema
-    request_view_args = {"pid_value": ma.fields.Str()}
-    request_headers = {"if_match": ma.fields.Int()}
+    request_view_args = {
+        "pid_value": ma.fields.Str(),
+    }
+    request_headers = {
+        "if_match": ma.fields.Int(),
+    }
     request_body_parsers = {
         "application/json": RequestBodyParser(JSONDeserializer()),
         "application/marcxml": RequestBodyParser(JSONDeserializer()),
@@ -112,3 +130,18 @@ class Marc21ParentRecordLinksResourceConfig(RecordResourceConfig):
     request_view_args = {"pid_value": ma.fields.Str(), "link_id": ma.fields.Str()}
 
     response_handlers = {"application/json": ResponseHandler(Marc21JSONSerializer())}
+
+
+class Marc21RecordCommunitiesResourceConfig(CommunityResourceConfig, ConfiguratorMixin):
+    """Publications communities resource config."""
+
+    blueprint_name = "publications-community"
+    url_prefix = url_prefix
+    routes = community_routes
+
+    request_extra_args = {
+        "expand": ma.fields.Boolean(),
+        "membership": ma.fields.Boolean(),
+    }
+
+    error_handlers = community_error_handlers

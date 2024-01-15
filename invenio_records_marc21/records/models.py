@@ -12,6 +12,7 @@
 
 """Marc21 Record and Draft models."""
 
+from invenio_communities.records.records.models import CommunityRelationMixin
 from invenio_db import db
 from invenio_drafts_resources.records import (
     DraftMetadataBase,
@@ -31,6 +32,13 @@ class ParentMetadata(db.Model, RecordMetadataBase):
     """Metadata store for the parent record."""
 
     __tablename__ = "marc21_parents_metadata"
+
+
+class ParentCommunity(db.Model, CommunityRelationMixin):
+    """Relationship between parent record and communities."""
+
+    __tablename__ = "marc21_parents_community"
+    __record_model__ = ParentMetadata
 
 
 class RecordMetadata(db.Model, RecordMetadataBase, ParentRecordMixin):

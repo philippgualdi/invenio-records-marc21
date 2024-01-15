@@ -102,6 +102,16 @@
           }
         }
       },
+      "communities": {
+        "properties": {
+          "ids": {
+            "type": "keyword"
+          },
+          "default": {
+            "type": "keyword"
+          }
+        }
+      },
       "parent": {
         "properties": {
           "$schema": {

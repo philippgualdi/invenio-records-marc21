@@ -12,6 +12,7 @@
 
 from __future__ import absolute_import, print_function
 
+from invenio_communities.records.records.systemfields import CommunitiesField
 from invenio_drafts_resources.records import Draft, Record
 from invenio_drafts_resources.records.api import ParentRecord as BaseParentRecord
 from invenio_drafts_resources.records.systemfields import ParentField
@@ -30,6 +31,8 @@ from invenio_records_resources.records.systemfields import (
     PIDField,
     PIDStatusCheckField,
 )
+from invenio_requests.records.api import Request
+from invenio_requests.records.systemfields.relatedrecord import RelatedRecord
 
 from . import models
 from .systemfields import (
@@ -47,7 +50,6 @@ from .systemfields import (
 class Marc21Parent(BaseParentRecord):
     """Parent record."""
 
-    versions_model_cls = models.VersionsState
     model_cls = models.ParentMetadata
 
     schema = ConstantField("$schema", "local://marc21/parent-v2.0.0.json")
@@ -60,6 +62,13 @@ class Marc21Parent(BaseParentRecord):
         delete=False,
     )
     access = ParentRecordAccessField()
+
+    review = RelatedRecord(
+        Request,
+        keys=["type", "receiver", "status"],
+    )
+
+    communities = CommunitiesField(models.ParentCommunity)
 
 
 class DraftFile(BaseFileRecord):

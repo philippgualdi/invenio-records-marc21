@@ -23,10 +23,12 @@ import {
   PublishButton,
   PreviewButton,
   DepositFormApp,
-  FormFeedback,
   DeleteButton,
   DepositStatusBox,
+  FormFeedback,
+  CommunityHeader,
 } from "@js/invenio_rdm_records";
+
 import PropTypes from "prop-types";
 
 export class Marc21DepositForm extends Component {
@@ -66,9 +68,14 @@ export class Marc21DepositForm extends Component {
         recordSerializer={this.recordSerializer}
       >
         <FormFeedback fieldPath="message" />
+        {/* <Marc21FormFeedback fieldPath="marc21message" /> */}
         <Container style={{ marginTop: "10px" }}>
           <Grid>
             <Grid.Row>
+              <CommunityHeader
+                imagePlaceholderLink="/static/images/square-placeholder.png"
+                record={record}
+              />
               <Grid.Column mobile={16} tablet={16} computer={11}>
                 <AccordionField
                   includesPaths={["files.enabled"]}

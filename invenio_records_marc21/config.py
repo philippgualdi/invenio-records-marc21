@@ -20,7 +20,7 @@ from invenio_rdm_records.services import facets as rdm_facets
 from invenio_rdm_records.services.pids import providers
 
 from .resources.serializers.datacite import Marc21DataCite43JSONSerializer
-from .services import facets
+from .services import Marc21RecordPermissionPolicy, facets
 from .services.pids import Marc21DataCitePIDProvider
 
 MARC21_FACETS = {
@@ -266,3 +266,12 @@ MARC21_RECORD_MANAGER_NEEDS = [RoleNeed("Marc21Manager")]
 
 MARC21_RECORD_CURATOR_NEEDS = [RoleNeed("Marc21Curator")]
 """This Role is to modify records only, no creation, no deletion possible."""
+
+
+MARC21_PERMISSION_POLICY = Marc21RecordPermissionPolicy
+#
+# Record review requests
+#
+MARC21_RECORD_REVIEWS = [
+    "community-submission",
+]

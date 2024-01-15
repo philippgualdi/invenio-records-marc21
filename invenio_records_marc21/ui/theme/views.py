@@ -16,7 +16,7 @@ from invenio_users_resources.proxies import current_user_resources
 
 from invenio_records_marc21.resources.serializers.ui import Marc21UIXMLSerializer
 
-from .decorators import pass_draft, pass_draft_files
+from .decorators import pass_draft, pass_draft_community, pass_draft_files
 from .deposit import deposit_config, deposit_templates, empty_record
 
 
@@ -43,12 +43,14 @@ def uploads_marc21():
 
 
 @login_required
-def deposit_create():
+@pass_draft_community
+def deposit_create(community=None):
     """Create a new deposit page."""
     return render_template(
         "invenio_records_marc21/deposit/index.html",
         record=empty_record(),
         files=dict(default_preview=None, entries=[], links={}),
+        preselectedCommunity=community,
         templates=deposit_templates(),
         forms_config=deposit_config(),
     )

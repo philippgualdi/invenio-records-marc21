@@ -34,6 +34,11 @@ it under the terms of the MIT License; see LICENSE file for more details.
 <input id="marc21-deposit-permissions" type="hidden" name="marc21-deposit-permissions"
   value='{{permissions | tojson }}' />
 {%- endif %}
+{%- if preselectedCommunity %}
+<input id="marc21-deposit-draft-community" type="hidden" name="deposits-draft-community"
+       value='{{ preselectedCommunity | tojson }}'>
+{%- endif %}
+
 
 <div id="marc21-deposit-form"></div>
 

@@ -15,8 +15,10 @@
 
 
 from flask import g
-from flask_resources import resource_requestctx, response_handler, route
+from flask_resources import Resource, resource_requestctx, response_handler, route
 from invenio_drafts_resources.resources import RecordResource
+from invenio_rdm_records.resources import RDMRecordResource
+from invenio_records_resources.resources.errors import ErrorHandlersMixin
 from invenio_records_resources.resources.records.resource import (
     request_data,
     request_headers,
@@ -30,7 +32,7 @@ from . import config
 #
 # Records
 #
-class Marc21RecordResource(RecordResource):
+class Marc21RecordResource(RDMRecordResource):
     """Bibliographic record resource."""
 
     config_name = "MARC21_RECORDS_RECORD_CONFIG"
@@ -64,6 +66,11 @@ class Marc21RecordResource(RecordResource):
             route("POST", p(routes["item-publish"]), self.publish),
             # User Dashboard routes
             route("GET", s(routes["user-prefix"]), self.search_user_records),
+            # Reviews
+            route("GET", p(routes["item-review"]), self.review_read),
+            route("PUT", p(routes["item-review"]), self.review_update),
+            route("DELETE", p(routes["item-review"]), self.review_delete),
+            route("POST", p(routes["item-actions-review"]), self.review_submit),
         ]
 
         if self.service.draft_files:
@@ -116,7 +123,7 @@ class Marc21RecordResource(RecordResource):
 
 
 class Marc21ParentRecordLinksResource(RecordResource):
-    """Secret links resource."""
+    """Marc21 parent publication resource."""
 
     def create_url_rules(self):
         """Create the URL rules for the record resource."""
@@ -133,3 +140,21 @@ class Marc21ParentRecordLinksResource(RecordResource):
             route("PUT", p(routes["item"]), self.update),
             route("DELETE", p(routes["item"]), self.delete),
         ]
+
+
+class Marc21RecordCommunitiesResource(ErrorHandlersMixin, Resource):
+    """Marc21 communities publication resource."""
+
+    def __init__(self, config, service):
+        """Constructor."""
+        super().__init__(config)
+        self.service = service
+
+    def create_url_rules(self):
+        """Create the URL rules for the record resource."""
+        routes = self.config.routes
+        url_rules = [
+            route("GET", routes["list"], self.search),
+            route("GET", routes["suggestions"], self.get_suggestions),
+        ]
+        return url_rules

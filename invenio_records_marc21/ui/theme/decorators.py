@@ -13,7 +13,11 @@
 
 from functools import wraps
 
-from flask import g
+from flask import g, request
+from invenio_communities.communities.resources.serializer import (
+    UICommunityJSONSerializer,
+)
+from invenio_communities.proxies import current_communities
 from invenio_records_resources.services.errors import PermissionDeniedError
 
 from ...proxies import current_records_marc21
@@ -72,6 +76,27 @@ def pass_draft_files(f):
             # page when a user is allowed to read the metadata but not the
             # files
             kwargs["draft_files"] = None
+
+        return f(**kwargs)
+
+    return view
+
+
+def pass_draft_community(f):
+    """Decorate to retrieve the community record using the community service.
+
+    Pass the community record or None when creating a new draft and having
+    selected a community via the url.
+    """
+
+    @wraps(f)
+    def view(**kwargs):
+        comid = request.args.get("community")
+        if comid:
+            community = current_communities.service.read(id_=comid, identity=g.identity)
+            kwargs["community"] = UICommunityJSONSerializer().dump_obj(
+                community.to_dict()
+            )
 
         return f(**kwargs)
 
