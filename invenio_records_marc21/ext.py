@@ -16,7 +16,7 @@ from invenio_rdm_records.proxies import current_rdm_records
 from invenio_rdm_records.services.pids import PIDManager, PIDsService
 from invenio_records_resources.resources import FileResource
 from invenio_records_resources.services import FileService
-
+from invenio_rdm_records.services import RecordRequestsService
 from . import config
 from .resources import (
     Marc21DraftFilesResourceConfig,
@@ -29,6 +29,7 @@ from .resources import (
     Marc21RecordResourceConfig,
 )
 from .services import (
+    Marc21RecordRequestsConfig,
     Marc21DraftFilesServiceConfig,
     Marc21RecordFilesServiceConfig,
     Marc21RecordService,
@@ -90,6 +91,7 @@ class InvenioRecordsMARC21(object):
             record = Marc21RecordServiceConfig.build(app)
             file = Marc21RecordFilesServiceConfig.build(app)
             file_draft = Marc21DraftFilesServiceConfig.build(app)
+            record_requests = Marc21RecordRequestsConfig.build(app)
             record_communities = Marc21RecordCommunitiesConfig.build(app)
 
         return ServiceConfigs
@@ -113,6 +115,9 @@ class InvenioRecordsMARC21(object):
 
         self.record_communities_service = Marc21RecordCommunitiesService(
             config=service_config.record_communities,
+        )
+        self.record_requests_service = RecordRequestsService(
+            config=service_config.record_requests
         )
 
     def init_resources(self, app):

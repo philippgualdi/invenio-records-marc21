@@ -20,5 +20,5 @@ class Marc21CommunityInclusion(CommunityInclusion):
     """Community inclusion request for adding a record to a community."""
 
     type_id = "marc21-community-inclusion"
-    allowed_topic_ref_types = ["marcrecord"]
+    allowed_topic_ref_types = ["record"]
 

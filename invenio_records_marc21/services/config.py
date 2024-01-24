@@ -24,6 +24,7 @@ from invenio_indexer.api import RecordIndexer
 from invenio_rdm_records.services import facets as rdm_facets
 from invenio_rdm_records.services.components import AccessComponent
 from invenio_rdm_records.services.config import (
+    RDMRecordRequestsConfig,
     has_doi,
     is_draft_and_has_review,
     is_record_and_has_doi,
@@ -70,6 +71,19 @@ class Marc21SearchDraftsOptions(SearchDraftsOptions, SearchOptionsMixin):
 
 class Marc21SearchVersionsOptions(SearchVersionsOptions, SearchOptionsMixin):
     """Search options for record versioning search."""
+
+class Marc21RecordRequestsConfig(RDMRecordRequestsConfig):
+    """Record community inclusion config."""
+    request_record_cls = Marc21Record
+    service_id = "marc21-records-requests"
+    permission_policy_cls = FromConfig(
+        "MARC21_PERMISSION_POLICY", default=Marc21RecordPermissionPolicy, import_string=True
+    )
+
+    # request-specific configuration
+    schema = None  # stored in the API classes, for customization
+    indexer_queue_name = "requests"
+    index_dumper = None
 
 
 class Marc21RecordServiceConfig(RecordServiceConfig, ConfiguratorMixin):
@@ -198,6 +212,7 @@ class Marc21RecordServiceConfig(RecordServiceConfig, ConfiguratorMixin):
             "{+api}/publications/{id}/draft/actions/submit-review",
             when=is_draft_and_has_review,
         ),
+        "requests": RecordLink("{+api}/publications/{id}/requests"),
     }
 
     # PIDs providers - set from config in customizations.

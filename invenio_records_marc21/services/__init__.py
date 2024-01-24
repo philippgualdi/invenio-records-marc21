@@ -14,6 +14,7 @@
 from .config import (
     Marc21DraftFilesServiceConfig,
     Marc21RecordFilesServiceConfig,
+    Marc21RecordRequestsConfig,
     Marc21RecordServiceConfig,
 )
 from .permissions import Marc21RecordPermissionPolicy
@@ -37,6 +38,7 @@ __all__ = (
     "Marc21Metadata",
     "add_file_to_record",
     "create_record",
+    "Marc21RecordRequestsConfig",
     "Marc21RecordService",
     "Marc21DraftFilesService",
     "Marc21RecordFilesService",

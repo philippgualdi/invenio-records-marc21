@@ -57,3 +57,9 @@ def create_parent_record_links_bp(app):
     """Create parent record links blueprint."""
     ext = app.extensions["invenio-records-marc21"]
     return ext.parent_record_links_resource.as_blueprint()
+
+
+def create_community_records_bp(app):
+    """Create community's records blueprint."""
+    ext = app.extensions["invenio-records-marc21"]
+    return ext.community_records_resource.as_blueprint()

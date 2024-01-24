@@ -16,6 +16,8 @@ from invenio_rdm_records.services import RDMRecordService
 from invenio_records_resources.services.files.service import FileService
 from invenio_records_resources.services.records.results import RecordItem
 from invenio_records_resources.services.uow import unit_of_work
+from invenio_search.engine import dsl
+from sqlalchemy.orm.exc import NoResultFound
 
 from .config import Marc21DraftFilesServiceConfig, Marc21RecordFilesServiceConfig
 from .errors import EmbargoNotLiftedError
@@ -155,6 +157,56 @@ class Marc21RecordService(RDMRecordService):
         if record.has_draft and lifted_embargo_from_draft:
             self.indexer.index(draft)
 
+    def search_draft_or_record(
+        self, identity, id_, params=None, search_preference=None, expand=False, **kwargs
+    ):
+        """Search for record's or draft."""
+        try:
+            record = self.record_cls.pid.resolve(id_, registered_only=False)
+        except NoResultFound:
+            record = self.draft_cls.pid.resolve(id_, registered_only=False)
+
+        self.require_permission(identity, "read", record=record)
+
+        # Prepare and execute the search
+        params = params or {}
+
+        search_result = self._search(
+            "search_versions",
+            identity,
+            params,
+            search_preference,
+            record_cls=self.record_cls,
+            search_opts=self.config.search_versions,
+            extra_filter=dsl.Q(
+                "term", **{"parent.id": str(record.parent.pid.pid_value)}
+            ),
+            permission_action="read",
+            **kwargs
+        ).execute()
+
+    def _rebuild_index(self, indexer, model_cls):
+        records = (
+            db.session.query(model_cls.id)
+            .filter(model_cls.is_deleted == False)
+            .yield_per(1000)
+        )
+        for rec in records:
+            try:
+                indexer.bulk_index(rec.id)
+            except Exception:
+                pass
+
+
+    def rebuild_index(self, identity, uow=None):
+        """Reindex all records managed by this service.
+
+        Note: Skips (soft) deleted records.
+        """
+        self._rebuild_index(self.indexer, self.record_cls.model_cls)
+        self._rebuild_index(self.draft_indexer, self.draft_cls.model_cls)
+
+        return True
 
 #
 # Record files

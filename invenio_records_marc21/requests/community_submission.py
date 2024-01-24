@@ -43,7 +43,7 @@ class SubmitAction(actions.SubmitAction):
 class Marc21CommunitySubmission(CommunitySubmission):
     """Review request for submitting a record to a community."""
     type_id = "marc21-community-submission"
-    allowed_topic_ref_types = ["marcrecord"]
+    allowed_topic_ref_types = ["record"]
 
     available_actions = {
         "create": actions.CreateAction,
