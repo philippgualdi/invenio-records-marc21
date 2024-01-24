@@ -2,7 +2,7 @@
 #
 # This file is part of Invenio.
 #
-# Copyright (C) 2021 Graz University of Technology.
+# Copyright (C) 2021-2024 Graz University of Technology.
 #
 # Invenio-Records-Marc21 is free software; you can redistribute it and/or
 # modify it under the terms of the MIT License; see LICENSE file for more
@@ -14,7 +14,6 @@ from __future__ import absolute_import, print_function
 
 from invenio_rdm_records.proxies import current_rdm_records
 from invenio_rdm_records.services.pids import PIDManager, PIDsService
-from invenio_rdm_records.services.review.service import ReviewService
 from invenio_records_resources.resources import FileResource
 from invenio_records_resources.services import FileService
 
@@ -40,6 +39,7 @@ from .services.communities import (
     Marc21RecordCommunitiesService,
 )
 from .services.communities_inclusion import Marc21CommunityInclusionService
+from .services.review import Marc21ReviewService
 from .system import Marc21TemplateConfig, Marc21TemplateService
 
 
@@ -103,7 +103,7 @@ class InvenioRecordsMARC21(object):
             files_service=FileService(service_config.file),
             draft_files_service=FileService(service_config.file_draft),
             pids_service=PIDsService(service_config.record, PIDManager),
-            review_service=ReviewService(service_config.record),
+            review_service=Marc21ReviewService(service_config.record),
         )
         self.templates_service = Marc21TemplateService(
             config=Marc21TemplateConfig,

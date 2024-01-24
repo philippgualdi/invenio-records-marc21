@@ -112,6 +112,9 @@
     "communities": {
       "$ref": "local://communities/definitions-v2.0.0.json#/communities"
     },
+    "review": {
+      "$ref": "local://requests/request-v1.0.0.json"
+    },
     "permission_flags": {
       "type": "object",
       "additionalProperties": true,

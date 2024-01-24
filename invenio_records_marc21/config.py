@@ -273,5 +273,5 @@ MARC21_PERMISSION_POLICY = Marc21RecordPermissionPolicy
 # Record review requests
 #
 MARC21_RECORD_REVIEWS = [
-    "community-submission",
+    "marc21-community-submission",
 ]

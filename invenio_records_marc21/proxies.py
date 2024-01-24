@@ -17,3 +17,8 @@ current_records_marc21 = LocalProxy(
     lambda: current_app.extensions["invenio-records-marc21"]
 )
 """Helper proxy to get the current records marc21 extension."""
+
+current_records_marc21_service = LocalProxy(
+    lambda: current_app.extensions["invenio-records-marc21"].records_service
+)
+"""Helper proxy to get the current RDM-Records records service extension."""

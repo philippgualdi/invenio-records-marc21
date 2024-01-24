@@ -121,6 +121,42 @@ class Marc21RecordResource(RDMRecordResource):
         )
         return item.to_dict(), 200
 
+    @request_headers
+    @request_view_args
+    @request_data  # TODO: probably needs to change
+    def review_update(self):
+        """Update a review request."""
+        type = resource_requestctx.data.pop("type")
+        type = f"marc21-{type}"
+        resource_requestctx.data["type"] = type
+
+        item = self.service.review.update(
+            g.identity,
+            resource_requestctx.view_args["pid_value"],
+            resource_requestctx.data,
+            revision_id=resource_requestctx.headers.get("if_match"),
+        )
+
+        return item.to_dict(), 200
+
+    @request_headers
+    @request_view_args
+    @request_data
+    def review_submit(self):
+        """Submit a draft for review or directly publish it."""
+        require_review = False
+        if resource_requestctx.data:
+            require_review = resource_requestctx.data.pop("require_review", False)
+
+        item = self.service.review.submit(
+            g.identity,
+            resource_requestctx.view_args["pid_value"],
+            resource_requestctx.data,
+            require_review=require_review,
+        )
+        return item.to_dict(), 202
+
+
 
 class Marc21ParentRecordLinksResource(RecordResource):
     """Marc21 parent publication resource."""
