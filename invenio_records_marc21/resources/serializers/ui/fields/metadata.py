@@ -53,9 +53,11 @@ class Marc21Fields:
         """Constructor."""
         self.fields = {
             field_number: [
-                Marc21Datafield(**field)
-                if isinstance(field, dict)
-                else Marc21Controlfield(field)
+                (
+                    Marc21Datafield(**field)
+                    if isinstance(field, dict)
+                    else Marc21Controlfield(field)
+                )
                 for field in fs
             ]
             for field_number, fs in fields.items()
