@@ -61,6 +61,7 @@ class Marc21SearchDraftsOptions(SearchDraftsOptions, SearchOptionsMixin):
     facets = {
         "access_status": rdm_facets.access_status,
         "is_published": facets.is_published,
+        "file_type": rdm_facets.filetype,
     }
 
 
