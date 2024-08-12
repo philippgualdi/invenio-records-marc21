@@ -43,6 +43,7 @@ from ..records import Marc21Draft, Marc21Parent, Marc21Record
 from . import facets
 from .components import DefaultRecordsComponents
 from .customizations import FromConfigPIDsProviders, FromConfigRequiredPIDs
+from .links import DefaultServiceLinks
 from .permissions import Marc21RecordPermissionPolicy
 from .schemas import Marc21ParentSchema, Marc21RecordSchema
 
@@ -138,50 +139,10 @@ class Marc21RecordServiceConfig(RecordServiceConfig, ConfiguratorMixin):
         default=DefaultRecordsComponents,
     )
 
-    links_item = {
-        "self": ConditionalLink(
-            cond=is_record,
-            if_=RecordLink("{+api}/publications/{id}"),
-            else_=RecordLink("{+api}/publications/{id}/draft"),
-        ),
-        "self_html": ConditionalLink(
-            cond=is_record,
-            if_=RecordLink("{+ui}/publications/{id}"),
-            else_=RecordLink("{+ui}/publications/uploads/{id}"),
-        ),
-        "self_doi": Link(
-            "{+ui}/publications/{+pid_doi}",
-            when=is_record_and_has_doi,
-            vars=lambda record, vars: vars.update(
-                {
-                    f"pid_{scheme}": pid["identifier"].split("/")[1]
-                    for (scheme, pid) in record.pids.items()
-                }
-            ),
-        ),
-        "doi": Link(
-            "https://doi.org/{+pid_doi}",
-            when=has_doi,
-            vars=lambda record, vars: vars.update(
-                {
-                    f"pid_{scheme}": pid["identifier"]
-                    for (scheme, pid) in record.pids.items()
-                }
-            ),
-        ),
-        "files": ConditionalLink(
-            cond=is_record,
-            if_=RecordLink("{+api}/publications/{id}/files"),
-            else_=RecordLink("{+api}/publications/{id}/draft/files"),
-        ),
-        "latest": RecordLink("{+api}/publications/{id}/versions/latest"),
-        "latest_html": RecordLink("{+ui}/publications/{id}/latest"),
-        "draft": RecordLink("{+api}/publications/{id}/draft", when=is_record),
-        "publish": RecordLink(
-            "{+api}/publications/{id}/draft/actions/publish", when=is_draft
-        ),
-        "versions": RecordLink("{+api}/publications/{id}/versions"),
-    }
+    links_item = FromConfig(
+        "MARC21_RECORDS_SERVICE_LINKS",
+        default=DefaultServiceLinks,
+    )
 
     # PIDs providers - set from config in customizations.
     pids_providers = FromConfigPIDsProviders(
