@@ -19,3 +19,7 @@ class ResourceTypeEnum(Enum):
     HSMASTER = "HS-MASTER"
 
     HSDISS = "HS-DISS"
+
+    CATALOGUE = "CATALOGUE"
+
+    CHAPTER = "CHAPTER"

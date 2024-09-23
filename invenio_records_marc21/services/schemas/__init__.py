@@ -30,6 +30,8 @@ from .metadata import MetadataSchema
 from .pids import PIDSchema
 from .statistics import Marc21StatisticSchema
 
+# from invenio_catalogue_marc21.services.schemas import CatalogueSchema
+
 
 def validate_scheme(scheme):
     """Validate a PID scheme."""
@@ -78,6 +80,7 @@ class Marc21RecordSchema(BaseRecordSchema, FieldPermissionsMixin):
     stats = NestedAttribute(Marc21StatisticSchema, dump_only=True)
 
     # TODO: catalogue dynamic loading
+    # catalogue = NestedAttribute(CatalogueSchema)
     # catalogue = NestedAttribute(CatalogueSchema)
 
     # Add version to record schema
