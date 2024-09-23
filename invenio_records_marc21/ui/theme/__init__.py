@@ -18,15 +18,15 @@ from ...proxies import current_records_marc21
 from .views import deposit_create, deposit_edit, index, search, uploads_marc21
 
 
-#
-# Registration
-#
 def current_identity_can_view() -> bool:
     """Checks whether current identity has viewing rights."""
     service = current_records_marc21.records_service
     return service.check_permission(g.identity, "view")
 
 
+#
+# Registration
+#
 def init_theme_views(blueprint, app):
     """Blueprint for the routes and resources provided by Invenio-Records-Marc21."""
     routes = app.config.get("MARC21_UI_THEME_ENDPOINTS")
@@ -38,16 +38,15 @@ def init_theme_views(blueprint, app):
     blueprint.add_url_rule(routes["deposit-create"], view_func=deposit_create)
     blueprint.add_url_rule(routes["deposit-edit"], view_func=deposit_edit)
 
-    # TODO: Fix this after inveniosoftware/invenio-base#171 has been solved
-    @blueprint.before_app_first_request
-    def register_marc21_dashboard():
-        """Register entry for marc21 in the `flask_menu`-submenu "dashboard"."""
-        user_dashboard_menu = current_menu.submenu("dashboard")
-        user_dashboard_menu.submenu("Publications").register(
-            "invenio_records_marc21.uploads_marc21",
-            text=_("Publications"),
-            order=4,
-            visible_when=current_identity_can_view,
-        )
-
     return blueprint
+
+
+def register_marc21_dashboard():
+    """Register entry for marc21 in the `flask_menu`-submenu "dashboard"."""
+    user_dashboard_menu = current_menu.submenu("dashboard")
+    user_dashboard_menu.submenu("Publications").register(
+        "invenio_records_marc21.uploads_marc21",
+        text=_("Publications"),
+        order=4,
+        visible_when=current_identity_can_view,
+    )

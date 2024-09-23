@@ -12,6 +12,7 @@
 
 from __future__ import absolute_import, print_function
 
+from flask import Flask
 from invenio_rdm_records.services.pids import PIDManager, PIDsService
 from invenio_records_resources.resources import FileResource
 from invenio_records_resources.services import FileService
@@ -32,6 +33,7 @@ from .services import (
     Marc21RecordServiceConfig,
 )
 from .system import Marc21TemplateConfig, Marc21TemplateService
+from .ui.theme import register_marc21_dashboard
 
 
 class InvenioRecordsMARC21(object):
@@ -117,3 +119,32 @@ class InvenioRecordsMARC21(object):
         self.parent_record_links_resource = Marc21ParentRecordLinksResource(
             service=self.records_service, config=Marc21ParentRecordLinksResourceConfig
         )
+
+
+def finalize_app(app: Flask) -> None:
+    """Finalize app."""
+    init(app)
+    register_marc21_dashboard()
+
+
+def api_finalize_app(app: Flask) -> None:
+    """Finalize app for api."""
+    init(app)
+
+
+def init(app: Flask) -> None:
+    """Init app by registering services."""
+    # Register services - cannot be done in extension because
+    # Invenio-Records-Resources might not have been initialized.
+
+    ext = app.extensions["invenio-records-marc21"]
+    sregistry = app.extensions["invenio-records-resources"].registry
+    sregistry.register(ext.records_service, service_id="marc21-records")
+    sregistry.register(ext.records_service.files, service_id="marc21-files")
+    sregistry.register(ext.records_service.draft_files, service_id="marc21-draft-files")
+
+    iregistry = app.extensions["invenio-indexer"].registry
+    iregistry.register(ext.records_service.indexer, indexer_id="marc21-records")
+    iregistry.register(
+        ext.records_service.draft_indexer, indexer_id="marc21-records-drafts"
+    )
