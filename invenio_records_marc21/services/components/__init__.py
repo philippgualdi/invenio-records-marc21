@@ -10,8 +10,6 @@
 
 """Marc21 record components."""
 
-# TODO: catalogue dynamic loading
-# from invenio_catalogue_marc21.services.components import CatalogueComponent
 from invenio_drafts_resources.services.records.components import DraftFilesComponent
 from invenio_rdm_records.services.components import AccessComponent
 
@@ -25,7 +23,6 @@ DefaultRecordsComponents = [
     DraftFilesComponent,
     PIDComponent,
     PIDsComponent,
-    #    CatalogueComponent,
 ]
 
 __all__ = ("DefaultRecordsComponents",)

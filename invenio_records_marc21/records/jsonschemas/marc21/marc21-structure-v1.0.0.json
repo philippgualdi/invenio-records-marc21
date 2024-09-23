@@ -20609,6 +20609,35 @@
                           }
                       }
                   }
+              },
+              "970": {
+                  "description": "Non-MARC Information Field",
+                  "type": "array",
+                  "items": {
+                      "type":"object",
+                      "additionalProperties":true,
+                      "properties": {
+                          "ind1": {
+                              "enum": ["2"]
+                          },
+                          "ind2": {
+                              "enum": ["_"]
+                          },
+                          "subfields": {
+                              "type":"object" ,
+                              "additionalProperties":true,
+                              "properties":{
+                                  "d": {
+                                      "description": "Source of data",
+                                      "type": "array",
+                                      "items": {
+                                          "type": "string"
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
               }
           }
       }
