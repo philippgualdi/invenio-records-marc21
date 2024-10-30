@@ -119,4 +119,4 @@ class Marc21ParentRecordLinksResourceConfig(RecordResourceConfig):
 
     request_view_args = {"pid_value": ma.fields.Str(), "link_id": ma.fields.Str()}
 
-    response_handlers = record_serializers
+    response_handlers = record_serializer
