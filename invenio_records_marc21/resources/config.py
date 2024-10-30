@@ -23,7 +23,7 @@ from .serializers import (
     Marc21UIJSONSerializer,
 )
 
-record_serializers = {
+record_serializer = {
     "application/json": ResponseHandler(Marc21JSONSerializer()),
     "application/vnd.inveniomarc21.v1+json": ResponseHandler(Marc21DepositSerializer()),
     "application/vnd.inveniomarc21.ui.v1+json": ResponseHandler(
@@ -54,7 +54,7 @@ class Marc21RecordResourceConfig(RecordResourceConfig):
 
     default_accept_mimetype = "application/json"
 
-    response_handlers = record_serializers
+    response_handlers = record_serializer
 
     request_view_args = {
         "pid_value": ma.fields.Str(),

@@ -139,6 +139,10 @@ class Marc21RecordServiceConfig(RecordServiceConfig, ConfiguratorMixin):
         default=DefaultRecordsComponents,
     )
 
+# The `links_item` attribute in the `Marc21RecordServiceConfig` class is using the `FromConfig` helper
+# to dynamically load the configuration for service links from a specified configuration key
+# (`MARC21_RECORDS_SERVICE_LINKS`). If the configuration key is not found, it will default to using
+# `DefaultServiceLinks`.
     links_item = FromConfig(
         "MARC21_RECORDS_SERVICE_LINKS",
         default=DefaultServiceLinks,
